@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "realtor-clone-react",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
