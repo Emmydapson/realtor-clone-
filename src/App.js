@@ -27,6 +27,9 @@ function App() {
           <Route path="/create-listing" element={<PrivateRoute/>}>
             <Route path="/create-listing" element={<CreateListing/>}/>
           </Route>
+          <Route path="/edit-listing" element={<PrivateRoute/>}>
+            <Route path="/edit-listing/:listingId" element={<EditListing/>}/>
+          </Route>
         </Routes>
       </Router>
       <ToastContainer 
