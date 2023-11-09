@@ -13,7 +13,7 @@ import { addDoc, collection, doc, getDoc, serverTimestamp, updateDoc } from "fir
 import { db } from "../firebase";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function CreateListing() {
+export default function EditListing() {
   const navigate = useNavigate();
   const auth = getAuth();
   const [geolocationEnabled, setGeolocationEnabled] = useState(true);
