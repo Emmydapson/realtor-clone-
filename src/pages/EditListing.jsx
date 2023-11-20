@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Spinner from "../components/Spinner";
 import { toast } from "react-toastify";
 import {
@@ -9,11 +9,19 @@ import {
 } from "firebase/storage";
 import { getAuth } from "firebase/auth";
 import { v4 as uuidv4 } from "uuid";
-import { addDoc, collection, doc, getDoc, serverTimestamp, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../firebase";
 import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
 
-export default function EditListing() {
+export default function CreateListing() {
   const navigate = useNavigate();
   const auth = getAuth();
   const [geolocationEnabled, setGeolocationEnabled] = useState(true);
@@ -55,30 +63,28 @@ export default function EditListing() {
   const params = useParams();
 
   useEffect(() => {
-    if(listing && listing.userRef !== auth.currentUser.uid){
-        toast.error("you can't edit this listing");
-        navigate("/");
+    if (listing && listing.userRef !== auth.currentUser.uid) {
+      toast.error("You can't edit this listing");
+      navigate("/");
     }
   }, [auth.currentUser.uid, listing, navigate]);
 
   useEffect(() => {
-        setLoading(true);
-        async function fetchListing() {
-            const docRef = doc(db, "listings", params.listingId);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()){
-                setListing(docSnap.data());
-                setFormData({...docSnap.data()})
-                setLoading(false)
-            }else{
-                navigate("/");
-                toast.error("Listing does not exist");
-            }
-        }
-        fetchListing();
-  }, [navigate, params.listingId ]);
-
-  
+    setLoading(true);
+    async function fetchListing() {
+      const docRef = doc(db, "listings", params.listingId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setListing(docSnap.data());
+        setFormData({ ...docSnap.data() });
+        setLoading(false);
+      } else {
+        navigate("/");
+        toast.error("Listing does not exist");
+      }
+    }
+    fetchListing();
+  }, [navigate, params.listingId]);
 
   function onChange(e) {
     let boolean = null;
@@ -197,7 +203,7 @@ export default function EditListing() {
     delete formDataCopy.latitude;
     delete formDataCopy.longitude;
     const docRef = doc(db, "listings", params.listingId);
-    
+
     await updateDoc(docRef, formDataCopy);
     setLoading(false);
     toast.success("Listing Edited");
